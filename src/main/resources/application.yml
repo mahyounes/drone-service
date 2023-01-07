@@ -1,0 +1,112 @@
+#--------------- Spring Properties - Start ---------------#
+spring:
+
+   #Application name
+   application:
+      name: '@project.artifactId@'
+
+  #Time to wait for accepted requests to finish when Graceful shutdown
+   lifecycle:
+     timeout-per-shutdown-phase: 30s
+
+
+  #Jackson Config      
+   jackson:
+     default-property-ignore: ignore_unknown
+     serialization:
+        FAIL_ON_EMPTY_BEANS: false 
+     deserialization:
+       FAIL_ON_UNKNOWN_PROPERTIES: false
+
+   #DB Configuration
+   jpa:
+      #Show executed SQL queries in console
+      show-sql: true
+      
+      #Hibernate configuration
+      hibernate:
+      
+         #Schema handling strategy
+         ddl-auto: update
+         
+         naming:
+           physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+      properties:
+        hibernate:
+         #The SQL dialect makes Hibernate generates better/optimized SQL queries for the chosen database which is MySQL here
+#         dialect: org.hibernate.dialect.MySQL8Dialect
+         dialect: org.hibernate.dialect.H2Dialect
+
+
+            
+   datasource:
+      #DB connectivity details
+      #H2 DB
+      driver-class-name: org.h2.Driver
+      url: "jdbc:h2:mem:test"
+
+#--------------- Spring Properties - End ---------------#
+
+#--------------- Server Properties - Start ---------------#
+server:
+   #Default server access port
+   port: 8080
+   
+   shutdown: GRACEFUL
+
+   #Default server context path
+   servlet:
+    context-path: /drone-service
+   
+   #Enable compression for different response types
+   compression:
+      enabled: true
+#--------------- Server Properties - End ---------------#
+
+#--------------- Swagger Properties - Start ---------------#
+springdoc:
+ packages-to-scan:
+  - com.musala
+ paths-to-match:
+  - /**
+ api-docs:
+    path: /v1
+    
+#Swagger UI configurations        
+swagger:
+   #API data
+   api:
+      title: "Drone service Backend REST API"
+      description: "Drone service Backend End-Points"
+      
+      #Contact team
+      contact-team:
+         title: "Mahmoud younes"
+         email: "mahmoud-younes1@outlook.com"
+#--------------- Swagger Properties - End ---------------#
+
+#--------------- Healt-End-Points - Start ---------------#
+#Customize data returned when accessing /info end point
+info:
+   app:
+      name: drone-serivce
+      description: Drone service has api to get info about drones used to deliver medications
+      version: '@project.version@'
+
+management:
+   endpoint:
+     health:
+       show-details: always
+     shutdown:
+       enabled: true
+
+   endpoints:
+      web:
+         #Customize health end-points root path
+         base-path: /actuator
+         
+         #Specify what end points to be exposed
+         exposure:
+            include: "refresh,shutdown, auditevents, beans, caches, health, conditions, configprops, env, info, loggers, heapdump, threaddump, metrics, scheduledtasks, httptrace, mappings, prometheus"
+#--------------- Healt-End-Points - End ---------------#
