@@ -4,7 +4,9 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,11 +21,18 @@ import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @Where(
 		clause = "delivered = false")
@@ -57,6 +66,7 @@ public class DronePackageEntity
 	private DroneEntity drone;
 
 	@OneToMany(
+			cascade = CascadeType.ALL,
 			fetch = FetchType.EAGER,
 			mappedBy = "dronePackage")
 	@NotFound(
@@ -77,6 +87,14 @@ public class DronePackageEntity
 	{
 		this.packageMedications.add(packageMedication);
 		packageMedication.setDronePackage(this);
+	}
+
+	public void addPackageMedication(final Set<PackageMedicationEntity> packageMedications)
+	{
+		for (PackageMedicationEntity packageMedicationEntity : packageMedications)
+		{
+			addPackageMedication(packageMedicationEntity);
+		}
 	}
 
 	public void removePackageMedication(final PackageMedicationEntity packageMedication)

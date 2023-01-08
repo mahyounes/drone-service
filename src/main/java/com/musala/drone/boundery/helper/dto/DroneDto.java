@@ -1,6 +1,8 @@
 package com.musala.drone.boundery.helper.dto;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -13,6 +15,7 @@ import com.musala.drone.entity.enums.DroneModelEnum;
 import com.musala.drone.entity.enums.DroneStateEnum;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -63,5 +66,8 @@ public class DroneDto extends BaseDto
 	@NotNull(
 			message = "Drone state is required")
 	private DroneStateEnum state;
+
+	@Builder.Default
+	private Set<DronePackageDto> dronePacakeges = new HashSet<>();
 
 }

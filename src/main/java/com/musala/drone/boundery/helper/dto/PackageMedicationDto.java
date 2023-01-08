@@ -3,11 +3,17 @@ package com.musala.drone.boundery.helper.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Setter
+@Getter
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PackageMedicationDto
 {
 

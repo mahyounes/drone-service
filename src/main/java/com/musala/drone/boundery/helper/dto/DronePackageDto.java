@@ -6,11 +6,18 @@ import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder
+@Setter
+@Getter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DronePackageDto
 {
 

@@ -1,15 +1,13 @@
 package com.musala.drone.entity;
 
 import java.math.BigDecimal;
-import java.sql.Blob;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Where;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +23,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@Where(
-		clause = "deleted = false")
 @Table(
 		name = "MEDICATION")
 public class MedicationEntity extends BaseEntity
@@ -50,5 +46,6 @@ public class MedicationEntity extends BaseEntity
 			name = "IMAGE_BASE_64")
 	@Basic(
 			fetch = FetchType.LAZY)
-	private Blob imageBase64;
+	@Lob
+	private String imageBase64;
 }
