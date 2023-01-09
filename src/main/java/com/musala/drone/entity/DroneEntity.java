@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -67,9 +66,9 @@ public class DroneEntity extends BaseEntity
 	@Enumerated(EnumType.STRING)
 	private DroneStateEnum state;
 
-	@OneToMany
-	@JoinColumn(
-			name = "DRONE_ID")
+	@OneToMany(
+			mappedBy = "drone",
+			orphanRemoval = true)
 	@Builder.Default
 	private Set<DroneBatteryHistoryEntity> batteryPercentLogs = new HashSet<>();
 

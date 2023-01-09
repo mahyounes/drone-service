@@ -44,6 +44,12 @@ public class DroneService
 		return this.droneMapper.toDto(droneEntity);
 	}
 
+	public List<DroneEntity> listDrones()
+	{
+
+		return this.droneRepository.findAll();
+	}
+
 	public Page<DroneDto> listAvailableDrones(final Pageable pageable)
 	{
 		Page<DroneEntity> droneEntities = this.droneRepository.findByState(DroneStateEnum.IDLE, pageable);
