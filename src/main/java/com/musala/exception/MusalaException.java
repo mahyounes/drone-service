@@ -1,8 +1,8 @@
-package com.musala.drone.exception;
+package com.musala.exception;
 
 import org.springframework.http.HttpStatus;
 
-import com.musala.drone.exception.model.MusalaErrorCodeEnum;
+import com.musala.exception.model.MusalaErrorCodeEnum;
 
 import lombok.Getter;
 

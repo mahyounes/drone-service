@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,8 +40,8 @@ import lombok.experimental.SuperBuilder;
 		clause = "delivered = false")
 @Table(
 		name = "DRONE_PACKAGE")
-public class DronePackageEntity
-{
+@EntityListeners(AuditingEntityListener.class)
+public class DronePackageEntity {
 
 	@Id
 	@GeneratedValue(
@@ -75,30 +77,24 @@ public class DronePackageEntity
 	private Set<PackageMedicationEntity> packageMedications = new HashSet<>();
 
 	@PreUpdate
-	protected void preUpdate()
-	{
-		if (this.delivered && this.deliveryDate == null)
-		{
+	protected void preUpdate() {
+		if (this.delivered && this.deliveryDate == null) {
 			this.deliveryDate = new Timestamp(System.currentTimeMillis());
 		}
 	}
 
-	public void addPackageMedication(final PackageMedicationEntity packageMedication)
-	{
+	public void addPackageMedication(final PackageMedicationEntity packageMedication) {
 		this.packageMedications.add(packageMedication);
 		packageMedication.setDronePackage(this);
 	}
 
-	public void addPackageMedication(final Set<PackageMedicationEntity> packageMedications)
-	{
-		for (PackageMedicationEntity packageMedicationEntity : packageMedications)
-		{
+	public void addPackageMedication(final Set<PackageMedicationEntity> packageMedications) {
+		for (PackageMedicationEntity packageMedicationEntity : packageMedications) {
 			addPackageMedication(packageMedicationEntity);
 		}
 	}
 
-	public void removePackageMedication(final PackageMedicationEntity packageMedication)
-	{
+	public void removePackageMedication(final PackageMedicationEntity packageMedication) {
 		this.packageMedications.remove(packageMedication);
 		packageMedication.setDronePackage(null);
 	}

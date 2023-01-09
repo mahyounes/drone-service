@@ -1,4 +1,4 @@
-package com.musala.drone.util;
+package com.musala.util;
 
 import java.util.List;
 

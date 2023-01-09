@@ -1,4 +1,4 @@
-package com.musala.drone.entity;
+package com.musala.medication.entity;
 
 import java.math.BigDecimal;
 
@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import com.musala.drone.entity.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

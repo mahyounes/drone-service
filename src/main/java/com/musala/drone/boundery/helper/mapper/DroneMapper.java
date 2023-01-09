@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.musala.drone.boundery.helper.dto.DroneDto;
 import com.musala.drone.entity.DroneEntity;
-import com.musala.drone.util.GenericMapper;
+import com.musala.util.GenericMapper;
 
 @Mapper(
 		componentModel = "spring")

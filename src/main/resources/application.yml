@@ -1,6 +1,9 @@
 #--------------- Spring Properties - Start ---------------#
 spring:
 
+   cloud:
+     config:
+       enabled: false
    #Application name
    application:
       name: '@project.artifactId@'
@@ -110,3 +113,12 @@ management:
          exposure:
             include: "refresh,shutdown, auditevents, beans, caches, health, conditions, configprops, env, info, loggers, heapdump, threaddump, metrics, scheduledtasks, httptrace, mappings, prometheus"
 #--------------- Healt-End-Points - End ---------------#
+
+drone:
+  minBatteryPercentForLoad: 25
+  job:
+    batteryHistory:
+      cron: "0 0/1 * 1/1 * ?"
+    retry:
+      attemptsNumber: 3
+      delay: 600000

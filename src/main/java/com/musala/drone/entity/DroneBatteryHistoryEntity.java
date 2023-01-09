@@ -5,12 +5,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +30,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Table(
 		name = "DRONE_BATTERY_HISTORY")
-public class DroneBatteryHistoryEntity
-{
+@EntityListeners(AuditingEntityListener.class)
+public class DroneBatteryHistoryEntity {
 
 	@Id
 	@GeneratedValue(
@@ -38,6 +42,7 @@ public class DroneBatteryHistoryEntity
 			nullable = false,
 			updatable = false,
 			name = "CREATION_DATE")
+	@CreatedDate
 	private Timestamp creationDate;
 
 	@Column(

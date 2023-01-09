@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.musala.drone.boundery.helper.dto.DronePackageDto;
 import com.musala.drone.boundery.helper.dto.PackageMedicationDto;
-import com.musala.drone.control.MedicationService;
 import com.musala.drone.entity.DronePackageEntity;
-import com.musala.drone.entity.MedicationEntity;
 import com.musala.drone.entity.PackageMedicationEntity;
-import com.musala.drone.exception.MusalaException;
-import com.musala.drone.exception.model.MusalaErrorCodeEnum;
+import com.musala.exception.MusalaException;
+import com.musala.exception.model.MusalaErrorCodeEnum;
+import com.musala.medication.control.MedicationService;
+import com.musala.medication.entity.MedicationEntity;
 
 @Mapper(
 		componentModel = "spring")

@@ -1,5 +1,7 @@
 package com.musala.drone.boundery;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -32,24 +34,20 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(
 		name = "DroneRest",
 		description = "Drone Rest Api")
-public class DroneRestApi
-{
+public class DroneRestApi {
 
 	private DroneService droneService;
 
-	public DroneRestApi(final DroneService droneService)
-	{
+	public DroneRestApi(final DroneService droneService) {
 		this.droneService = droneService;
 	}
 
 	@Operation(
 			summary = "Retrieve Drone",
 			description = "Retrieve Drone End-Point",
-			tags =
-			{ "DroneRest" })
+			tags = { "DroneRest" })
 	@ApiResponses(
-			value =
-			{ @ApiResponse(
+			value = { @ApiResponse(
 					responseCode = "200",
 					description = "Drone Found",
 					content = @Content(
@@ -66,8 +64,7 @@ public class DroneRestApi
 	@GetMapping("/{seriaNumber}")
 	public ResponseEntity<DroneDto> retrieveDrone(@Parameter(
 			description = "Drone seria number",
-			required = true) @PathVariable("seriaNumber") final String serialNumber) throws Exception
-	{
+			required = true) @PathVariable("seriaNumber") final String serialNumber) throws Exception {
 
 		log.info("Retrieving Drone with serial {}", serialNumber);
 
@@ -79,11 +76,9 @@ public class DroneRestApi
 	@Operation(
 			summary = "List available Drone",
 			description = "List available Drone End-Point",
-			tags =
-			{ "DroneRest" })
+			tags = { "DroneRest" })
 	@ApiResponses(
-			value =
-			{ @ApiResponse(
+			value = { @ApiResponse(
 					responseCode = "200",
 					description = "Drones Found",
 					content = @Content(
@@ -95,8 +90,7 @@ public class DroneRestApi
 							content = @Content) })
 	@GetMapping("/available")
 	public ResponseEntity<Page<DroneDto>> listAvailableDrones(@RequestParam("pageNo") final int pageNo,
-			@RequestParam("pageSize") final int pageSize)
-	{
+			@RequestParam("pageSize") final int pageSize) {
 
 		log.info("Retrieving available drones");
 
@@ -108,11 +102,9 @@ public class DroneRestApi
 	@Operation(
 			summary = "Register Drone",
 			description = "Register drone End-Point",
-			tags =
-			{ "DroneRest" })
+			tags = { "DroneRest" })
 	@ApiResponses(
-			value =
-			{ @ApiResponse(
+			value = { @ApiResponse(
 					responseCode = "201",
 					description = "Drone created",
 					content = @Content(
@@ -131,8 +123,7 @@ public class DroneRestApi
 							description = "Creation failed",
 							content = @Content) })
 	@PostMapping
-	public ResponseEntity<DroneDto> registerDrone(@RequestBody final DroneDto droneDto) throws Exception
-	{
+	public ResponseEntity<DroneDto> registerDrone(@Valid @RequestBody final DroneDto droneDto) {
 
 		log.info("Registering a drone with serial {}", droneDto.getSerialNumber());
 
@@ -143,28 +134,25 @@ public class DroneRestApi
 	@Operation(
 			summary = "Load Drone",
 			description = "Load drone End-Point",
-			tags =
-			{ "DroneRest" })
+			tags = { "DroneRest" })
 	@ApiResponses(
-			value =
-			{ @ApiResponse(
-					responseCode = "202",
+			value = { @ApiResponse(
+					responseCode = "204",
 					description = "Drone Loaded",
 					content = @Content),
 					@ApiResponse(
 							responseCode = "404",
-							description = "Medication not Found \n Drone not found",
+							description = "Medication not Found or Drone not found",
 							content = @Content),
 					@ApiResponse(
 							responseCode = "500",
 							description = "Loading failed",
 							content = @Content) })
 	@PatchMapping("/{droneSerialNumber}")
-	public ResponseEntity<DroneDto> LoadDrone(@Parameter(
+	public ResponseEntity<DroneDto> loadDrone(@Parameter(
 			description = "Drone seria number",
 			required = true) @PathVariable("droneSerialNumber") final String droneSerialNumber,
-			@RequestBody final DronePackageDto dronePackageDto) throws Exception
-	{
+			@Valid @RequestBody final DronePackageDto dronePackageDto) {
 
 		log.info("Loading a drone with serial {}", droneSerialNumber);
 

@@ -15,53 +15,46 @@ import com.musala.drone.boundery.helper.mapper.DroneMapper;
 import com.musala.drone.entity.DroneEntity;
 import com.musala.drone.entity.enums.DroneStateEnum;
 import com.musala.drone.entity.repository.DroneRepository;
-import com.musala.drone.exception.MusalaException;
-import com.musala.drone.exception.model.MusalaErrorCodeEnum;
+import com.musala.exception.MusalaException;
+import com.musala.exception.model.MusalaErrorCodeEnum;
 
 @Service
 @Transactional(
 		isolation = Isolation.READ_COMMITTED)
-public class DroneService
-{
+public class DroneService {
 
 	private DroneRepository droneRepository;
 	private DroneMapper droneMapper;
 	private DronePackageService dronePackageService;
 
 	public DroneService(final DroneRepository droneRepository, final DroneMapper droneMapper,
-			final DronePackageService dronePackageService)
-	{
+			final DronePackageService dronePackageService) {
 		this.droneRepository = droneRepository;
 		this.droneMapper = droneMapper;
 		this.dronePackageService = dronePackageService;
 	}
 
-	public DroneDto retrieveDrone(final String droneSerialNumber)
-	{
+	public DroneDto retrieveDrone(final String droneSerialNumber) {
 
 		DroneEntity droneEntity = this.droneRepository.findBySerialNumber(droneSerialNumber)
 				.orElseThrow(() -> new MusalaException(MusalaErrorCodeEnum.DNF));
 		return this.droneMapper.toDto(droneEntity);
 	}
 
-	public List<DroneEntity> listDrones()
-	{
+	public List<DroneEntity> listDrones() {
 
 		return this.droneRepository.findAll();
 	}
 
-	public Page<DroneDto> listAvailableDrones(final Pageable pageable)
-	{
+	public Page<DroneDto> listAvailableDrones(final Pageable pageable) {
 		Page<DroneEntity> droneEntities = this.droneRepository.findByState(DroneStateEnum.IDLE, pageable);
 		List<DroneDto> dtos = this.droneMapper.toDtos(droneEntities.getContent());
 
 		return new PageImpl<>(dtos, pageable, droneEntities.getTotalElements());
 	}
 
-	public DroneDto registerDrone(final DroneDto dronedto) throws Exception
-	{
-		if (this.droneRepository.findBySerialNumber(dronedto.getSerialNumber()).isPresent())
-		{
+	public DroneDto registerDrone(final DroneDto dronedto) {
+		if (this.droneRepository.findBySerialNumber(dronedto.getSerialNumber()).isPresent()) {
 			throw new MusalaException(MusalaErrorCodeEnum.DWSAR);
 		}
 		DroneEntity droneEntity = this.droneMapper.toEntity(dronedto);
@@ -69,8 +62,7 @@ public class DroneService
 		return this.droneMapper.toDto(savedDroneEntity);
 	}
 
-	public void loadDrone(final String droneSerialNumber, final DronePackageDto dronePackageDto) throws Exception
-	{
+	public void loadDrone(final String droneSerialNumber, final DronePackageDto dronePackageDto) {
 		DroneEntity droneEntity = this.droneRepository.findBySerialNumber(droneSerialNumber)
 				.orElseThrow(() -> new MusalaException(MusalaErrorCodeEnum.DNF));
 

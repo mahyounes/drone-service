@@ -16,6 +16,7 @@ import com.musala.drone.entity.enums.DroneStateEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,10 +27,11 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 @SuperBuilder
+@EqualsAndHashCode(
+		callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class DroneDto extends BaseDto
-{
+public class DroneDto extends BaseDto {
 
 	@NotBlank(
 			message = "Serial number is required")
@@ -69,5 +71,8 @@ public class DroneDto extends BaseDto
 
 	@Builder.Default
 	private Set<DronePackageDto> dronePacakeges = new HashSet<>();
+
+	@Builder.Default
+	private Set<DroneBatteryHistoryDto> batteryPercentLogs = new HashSet<>();
 
 }

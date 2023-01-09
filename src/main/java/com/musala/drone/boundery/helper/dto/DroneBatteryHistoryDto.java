@@ -1,9 +1,9 @@
 package com.musala.drone.boundery.helper.dto;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,16 +14,14 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 @SuperBuilder
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseDto {
+public class DroneBatteryHistoryDto {
 
-	protected Long id;
+	private Long id;
 
-	protected Timestamp creationDate;
+	private Timestamp creationDate;
 
-	protected Timestamp lastModifiedDate;
+	private BigDecimal remainingBatteryPercent;
 
-	protected long version;
 }

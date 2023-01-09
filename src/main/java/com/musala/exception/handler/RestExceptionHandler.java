@@ -1,4 +1,4 @@
-package com.musala.drone.exception.handler;
+package com.musala.exception.handler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.musala.drone.exception.MusalaException;
-import com.musala.drone.exception.model.ServiceErrorResponse;
+import com.musala.exception.MusalaException;
+import com.musala.exception.model.ServiceErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
