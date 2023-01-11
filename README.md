@@ -46,3 +46,17 @@ It has 5 apis:
 4- List available Drones End-Point (to list all drones available for loading (in idle state)) path=/drone/available and http method type is get
 
 5- Create medication End-Point (to create new medication) path=/medication and http method type is post
+
+## Assumptions
+
+1- Available drones for loading are in idle state.
+
+2- models vs weight:
+
+LIGHTWEIGHT <= 100
+
+MIDDLEWEIGHT <= 250
+
+CRUISERWEIGHT <= 350
+
+HEAVYWEIGHT <= 500
