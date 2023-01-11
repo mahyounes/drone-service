@@ -47,7 +47,7 @@ spring:
       #DB connectivity details
       #H2 DB
       driver-class-name: org.h2.Driver
-      url: "jdbc:h2:mem:test"
+      url: "jdbc:h2:mem:test;DB_CLOSE_ON_EXIT=FALSE"
 
 #--------------- Spring Properties - End ---------------#
 
