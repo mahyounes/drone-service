@@ -3,6 +3,8 @@ package com.musala.drone.boundery.helper.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.musala.medication.boundery.helper.dto.MedicationDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

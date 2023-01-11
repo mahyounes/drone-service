@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
@@ -31,17 +30,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musala.config.DroneConfiguration;
 import com.musala.drone.DroneServiceApplicationTests;
 import com.musala.drone.boundery.helper.dto.DroneDto;
-import com.musala.drone.boundery.helper.dto.DronePackageDto;
-import com.musala.drone.boundery.helper.dto.PackageMedicationDto;
 import com.musala.drone.entity.DroneEntity;
 import com.musala.drone.entity.enums.DroneModelEnum;
 import com.musala.drone.entity.enums.DroneStateEnum;
 import com.musala.drone.entity.repository.DroneRepository;
-import com.musala.drone.util.Constants;
-import com.musala.drone.util.TestBuilder;
 import com.musala.exception.model.MusalaErrorCodeEnum;
 import com.musala.medication.entity.MedicationEntity;
 import com.musala.medication.entity.repository.MedicationRepository;
+import com.musala.util.Constants;
+import com.musala.util.TestBuilder;
 
 @DirtiesContext
 @AutoConfigureMockMvc
@@ -96,8 +93,9 @@ class DroneRestApiTest
 
 		DroneDto droneDto = this.objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsString(),
 				DroneDto.class);
-		DroneDto expectedDroneDto = createDroneDto(Constants.FIRST_DRONE_SERIAL, Constants.FIRST_DRONE_STATE,
-				Constants.FIRST_DRONE_MODEL, Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT);
+		DroneDto expectedDroneDto = this.testBuilder.createDroneDto(Constants.FIRST_DRONE_SERIAL,
+				Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL, Constants.FIRST_DRONE_BATTERY_PERCENT,
+				Constants.FIRST_DRONE_MAX_WEIGHT);
 		expectedDroneDto.setCreationDate(droneDto.getCreationDate());
 		expectedDroneDto.setLastModifiedDate(droneDto.getLastModifiedDate());
 		expectedDroneDto.setId(droneDto.getId());
@@ -152,9 +150,9 @@ class DroneRestApiTest
 		String serialNumber = "serial4";
 		ResultActions resultActions = this.mvc
 				.perform(post("/drone")
-						.content(this.objectMapper.writeValueAsString(
-								createDroneDto(serialNumber, Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL,
-										Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT)))
+						.content(this.objectMapper.writeValueAsString(this.testBuilder.createDroneDto(serialNumber,
+								Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL,
+								Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT)))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated()).andExpect(jsonPath("$.serialNumber").value(serialNumber))
 				.andExpect(jsonPath("$.state").value(Constants.FIRST_DRONE_STATE.name()));
@@ -172,13 +170,11 @@ class DroneRestApiTest
 	void when_RegisterDroneWithAlreadyExistSerial_thenConflict() throws Exception
 	{
 
-		this.mvc.perform(
-				post("/drone")
-						.content(this.objectMapper.writeValueAsString(createDroneDto(Constants.FIRST_DRONE_SERIAL,
-								Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL,
-								Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT)))
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isConflict())
+		this.mvc.perform(post("/drone")
+				.content(this.objectMapper.writeValueAsString(this.testBuilder.createDroneDto(
+						Constants.FIRST_DRONE_SERIAL, Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL,
+						Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT)))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict())
 				.andExpect(jsonPath("$.errorCode").value(MusalaErrorCodeEnum.DWSAR.name()));
 	}
 
@@ -186,22 +182,21 @@ class DroneRestApiTest
 	void when_RegisterDroneWithSerialMoreThan100Char_thenBadRequest() throws Exception
 	{
 
-		this.mvc.perform(
-				post("/drone")
-						.content(this.objectMapper
-								.writeValueAsString(createDroneDto(RandomStringUtils.randomAlphabetic(101),
-										Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL,
-										Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT)))
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest());
+		this.mvc.perform(post("/drone")
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDroneDto(RandomStringUtils.randomAlphabetic(101),
+								Constants.FIRST_DRONE_STATE, Constants.FIRST_DRONE_MODEL,
+								Constants.FIRST_DRONE_BATTERY_PERCENT, Constants.FIRST_DRONE_MAX_WEIGHT)))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
 
 	@Test
 	void when_RegisterDroneWithWeightMoreThan500_thenBadRequest() throws Exception
 	{
 
-		this.mvc.perform(post("/drone").content(this.objectMapper
-				.writeValueAsString(createDroneDto(RandomStringUtils.randomAlphabetic(10), Constants.FIRST_DRONE_STATE,
+		this.mvc.perform(post("/drone")
+				.content(this.objectMapper.writeValueAsString(this.testBuilder.createDroneDto(
+						RandomStringUtils.randomAlphabetic(10), Constants.FIRST_DRONE_STATE,
 						Constants.FIRST_DRONE_MODEL, Constants.FIRST_DRONE_BATTERY_PERCENT, BigDecimal.valueOf(501))))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
@@ -210,8 +205,9 @@ class DroneRestApiTest
 	void when_RegisterDroneWithBatteryPercentMoreThan100_thenBadRequest() throws Exception
 	{
 
-		this.mvc.perform(post("/drone").content(this.objectMapper
-				.writeValueAsString(createDroneDto(RandomStringUtils.randomAlphabetic(10), Constants.FIRST_DRONE_STATE,
+		this.mvc.perform(post("/drone")
+				.content(this.objectMapper.writeValueAsString(this.testBuilder.createDroneDto(
+						RandomStringUtils.randomAlphabetic(10), Constants.FIRST_DRONE_STATE,
 						Constants.FIRST_DRONE_MODEL, BigDecimal.valueOf(101), Constants.FIRST_DRONE_MAX_WEIGHT)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
@@ -230,7 +226,8 @@ class DroneRestApiTest
 		long medicationCount = 1L;
 
 		this.mvc.perform(patch("/drone/" + serialNumber)
-				.content(this.objectMapper.writeValueAsString(createDronePackageDto(1L, medicationCount)))
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDronePackageDto(1L, medicationCount)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
 
 		Optional<DroneEntity> droneEntityOp = this.droneRepository.findBySerialNumber(serialNumber);
@@ -256,7 +253,8 @@ class DroneRestApiTest
 		long medicationCount = 1L;
 
 		this.mvc.perform(patch("/drone/" + serialNumber)
-				.content(this.objectMapper.writeValueAsString(createDronePackageDto(1000L, medicationCount)))
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDronePackageDto(1000L, medicationCount)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.errorCode").value(MusalaErrorCodeEnum.MNF.name()));
 
@@ -269,7 +267,8 @@ class DroneRestApiTest
 		long medicationCount = 1L;
 
 		this.mvc.perform(patch("/drone/serial-test")
-				.content(this.objectMapper.writeValueAsString(createDronePackageDto(1000L, medicationCount)))
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDronePackageDto(1000L, medicationCount)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.errorCode").value(MusalaErrorCodeEnum.DNF.name()));
 
@@ -286,7 +285,8 @@ class DroneRestApiTest
 		long medicationCount = 1L;
 
 		this.mvc.perform(patch("/drone/" + serialNumber)
-				.content(this.objectMapper.writeValueAsString(createDronePackageDto(1L, medicationCount)))
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDronePackageDto(1L, medicationCount)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict())
 				.andExpect(jsonPath("$.errorCode").value(MusalaErrorCodeEnum.DBL.name()));
 
@@ -302,7 +302,8 @@ class DroneRestApiTest
 		long medicationCount = 1L;
 
 		this.mvc.perform(patch("/drone/" + serialNumber)
-				.content(this.objectMapper.writeValueAsString(createDronePackageDto(1L, medicationCount)))
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDronePackageDto(1L, medicationCount)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict())
 				.andExpect(jsonPath("$.errorCode").value(MusalaErrorCodeEnum.DAL.name()));
 
@@ -318,7 +319,8 @@ class DroneRestApiTest
 		long medicationCount = 1L;
 
 		this.mvc.perform(patch("/drone/" + serialNumber)
-				.content(this.objectMapper.writeValueAsString(createDronePackageDto(1L, medicationCount)))
+				.content(this.objectMapper
+						.writeValueAsString(this.testBuilder.createDronePackageDto(1L, medicationCount)))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isConflict())
 				.andExpect(jsonPath("$.errorCode").value(MusalaErrorCodeEnum.DMWE.name()));
 
@@ -326,19 +328,4 @@ class DroneRestApiTest
 
 	//	--------------------Register drone test End-------------------------//
 
-	private DroneDto createDroneDto(final String serialNumber, final DroneStateEnum state, final DroneModelEnum model,
-			final BigDecimal remainingBatteryPercent, final BigDecimal maxWeight)
-	{
-
-		return DroneDto.builder().model(model).remainingBatteryPercent(remainingBatteryPercent)
-				.serialNumber(serialNumber).state(state).weightLimitInGram(maxWeight).build();
-	}
-
-	private DronePackageDto createDronePackageDto(final Long mdicationId, final Long medicationCount)
-	{
-
-		return DronePackageDto.builder().packageMedications(Set.of(
-				PackageMedicationDto.builder().medicationId(mdicationId).medicationItemsCount(medicationCount).build()))
-				.build();
-	}
 }

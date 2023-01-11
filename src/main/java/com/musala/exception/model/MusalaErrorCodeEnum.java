@@ -8,6 +8,7 @@ public enum MusalaErrorCodeEnum
 	DNF("A drone not found", HttpStatus.NOT_FOUND), DBL("Drone battery low", HttpStatus.CONFLICT),
 	DMWE("Drone max weight exceeded", HttpStatus.CONFLICT), MNF("Medication not found", HttpStatus.NOT_FOUND),
 	DAL("Drone already has a package", HttpStatus.CONFLICT),
+	MAE("Medication with the same name or code already exists", HttpStatus.CONFLICT),
 	DWSAR("A drone with this serial already registered", HttpStatus.CONFLICT);
 
 	private String message;

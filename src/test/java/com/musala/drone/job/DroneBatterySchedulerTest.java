@@ -17,8 +17,8 @@ import com.musala.drone.entity.DroneBatteryHistoryEntity;
 import com.musala.drone.entity.DroneEntity;
 import com.musala.drone.entity.repository.DroneBatteryHistoryRepository;
 import com.musala.drone.entity.repository.DroneRepository;
-import com.musala.drone.util.Constants;
-import com.musala.drone.util.TestBuilder;
+import com.musala.util.Constants;
+import com.musala.util.TestBuilder;
 
 @Transactional
 @DirtiesContext

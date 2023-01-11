@@ -19,6 +19,12 @@ public abstract class DroneMapper implements GenericMapper<DroneDto, DroneEntity
 	@Mapping(
 			target = "lastModifiedDate",
 			ignore = true)
+	@Mapping(
+			target = "batteryPercentLogs",
+			ignore = true)
+	@Mapping(
+			target = "dronePacakeges",
+			ignore = true)
 	public abstract DroneEntity toEntity(DroneDto dto);
 
 }
